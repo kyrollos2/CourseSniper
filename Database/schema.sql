@@ -3,7 +3,6 @@ CREATE TABLE courses (
     section_name VARCHAR(100) NOT NULL,
     title VARCHAR(100) NOT NULL,
     start_date DATE,
-    end_date DATE,
     available_seats INT,
     UNIQUE (section_name, title)
 );
