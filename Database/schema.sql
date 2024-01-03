@@ -16,3 +16,9 @@ CREATE TABLE users (
     desired_section_name VARCHAR(100) NOT NULL,
     FOREIGN KEY (desired_section_name) REFERENCES courses(section_name)
 );
+
+CREATE TABLE target_courses (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    target_courses VARCHAR(255 ) NOT NULL,
+    FOREIGN KEY (target_courses) REFERENCES users(email, desired_section_name)
+)
