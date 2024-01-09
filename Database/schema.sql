@@ -35,7 +35,6 @@ CREATE TABLE alerts (
     student_id INT NOT NULL,
     created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     sent TIMESTAMP NULL,
-    status VARCHAR(20) DEFAULT 'pending',
     FOREIGN KEY (course_id) REFERENCES courses(id),
     FOREIGN KEY (student_id) REFERENCES students(student_id),
     INDEX idx_email_alerts_status (status),  
