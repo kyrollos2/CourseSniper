@@ -29,14 +29,4 @@ CREATE TABLE target_courses (
     INDEX idx_target_courses_course_id (course_id)  
 );
 
-CREATE TABLE alerts (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    course_id INT NOT NULL,
-    student_id INT NOT NULL,
-    created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    sent TIMESTAMP NULL,
-    FOREIGN KEY (course_id) REFERENCES courses(id),
-    FOREIGN KEY (student_id) REFERENCES students(student_id),
-    INDEX idx_email_alerts_status (status),  
-    INDEX idx_email_alerts_course_id (course_id)  
-);
+
