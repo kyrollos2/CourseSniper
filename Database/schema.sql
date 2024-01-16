@@ -21,8 +21,8 @@ CREATE TABLE students (
 
 CREATE TABLE target_courses (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    student_id INT NOT NULL,
-    course_id INT NOT NULL,
+    student_id INT NOT NULL UNIQUE,
+    course_id INT NOT NULL UNIQUE,
     FOREIGN KEY (student_id) REFERENCES students(student_id),
     FOREIGN KEY (course_id) REFERENCES courses(id),
     INDEX idx_target_courses_student_id (student_id),  
