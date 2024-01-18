@@ -1,11 +1,10 @@
-# Project Name
+# CourseSniper
 
 ![Project Banner](https://your-image-url.com/project-banner.gif)
 
-> A captivating one-liner that sums up your project.
+> Never Miss Your First Choice Class Again!
 
-https://github-stats.com/kyrollos2/CourseSniper
-[![GitHub issues](https://img.shields.io/github/issues/kyrollos2/CourseSniper.svg?style=flat-square)](https://github.com/kyrollos2/CourseSniper/issues)
+[![GitHub Issues](https://img.shields.io/github/issues/kyrollos2/CourseSniper.svg?style=flat-square)](https://github.com/kyrollos2/CourseSniper/network)
 [![GitHub forks](https://img.shields.io/github/forks/kyrollos2/CourseSniper.svg?style=flat-square)](https://github.com/kyrollos2/CourseSniper/network)
 [![GitHub stars](https://img.shields.io/github/stars/kyrollos2/CourseSniper.svg?style=flat-square)](https://github.com/kyrollos2/CourseSniper/stargazers)
 [![GitHub license](https://img.shields.io/github/license/kyrollos2/CourseSniper.svg?style=flat-square)](https://github.com/kyrollos2/CourseSniper/blob/master/LICENSE)
