@@ -1,0 +1,2 @@
+Repository classes are interface classes that act as a layer of abstraction between the business logic
+and the database operations. Its purpose is to protect the integrity of the data in the database.

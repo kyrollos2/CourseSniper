@@ -20,7 +20,7 @@ listing. This is problematic because the data is not visible under many drop dow
 unorganized. This makes the coding process harder and the code also take longer to run.
 
 '''
-import pull_exceptions
+
 import time
 import json
 
