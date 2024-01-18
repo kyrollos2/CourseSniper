@@ -39,7 +39,7 @@ from selenium.common.exceptions import NoSuchElementException
 url = "https://selfserv.middlesexcc.edu/Student/Courses"
 
 web_options = Options()
-web_options.add_argument("--headless=new")
+#web_options.add_argument("--headless=new")
 
 driver = webdriver.Chrome(options=web_options)
 driver.get(url)
@@ -87,15 +87,15 @@ def print_course_list(file):
 
 def page_scraper(json_dict, table_id):
     #Waits for all the rows of the course catalog table to be visible
-    try:
-        WebDriverWait(driver, 10).until(EC.visibility_of_all_elements_located((By.XPATH, "//tbody[@class='esg-table-body']/tr/td")))
-    except TimeoutError as err:
-        print("Code has exceeded the 10 second maximum of waiting for website elements to load. Website is slower than usual or there is an issue with the code", err.args)
-        exit()
+    #try:
+    WebDriverWait(driver, 10).until(EC.visibility_of_all_elements_located((By.XPATH, "//tbody[@class='esg-table-body']/tr/td/div")))
+    #except TimeoutError as err:
+        #print("Code has exceeded the 10 second maximum of waiting for website elements to load. Website is slower than usual or there is an issue with the code", err.args)
+        #exit()
     
 
     #The variable below is a list of every course row on the current page of the course catalog
-    curr_page_table = driver.find_elements(by=By.XPATH, value="//tbody[@class='esg-table-body']/tr")
+    curr_page_table = driver.find_elements(by=By.XPATH, value="//tbody[@class='esg-table-body']/tr/td")
 
     #Loops through the list and grabs the text value of all the fields from the rows
     for row in curr_page_table:
