@@ -1,0 +1,6 @@
+Entity's are Java objects that are mapped onto database tables
+Strategy:
+1.Establish Student Entity
+2.Establish Course Entity
+3. Establish target_course entity as a bridge establishing a many to many 
+    relationship between students and courses

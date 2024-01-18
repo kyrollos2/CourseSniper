@@ -3,7 +3,6 @@ package com.coursesniper.coursniperdboperations.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,9 +12,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.coursesniper.coursniperdboperations.entity.Student;
+import com.coursesniper.coursniperdboperations.exception.ApiRequestException;
 import com.coursesniper.coursniperdboperations.service.StudentService;
 
 @RestController
@@ -23,6 +22,10 @@ import com.coursesniper.coursniperdboperations.service.StudentService;
 public class StudentController {
 
     private final StudentService studentService;
+
+    private static final String ERROR_FETCHING_STUDENTS = "Error fetching students";
+    private static final String STUDENT_NOT_FOUND = "Student not found";
+    private static final String ERROR_SAVING_STUDENT = "Error saving student";
 
     @Autowired
     public StudentController(StudentService studentService) {
@@ -35,21 +38,15 @@ public class StudentController {
             List<Student> students = studentService.findAllStudents();
             return ResponseEntity.ok(students);
         } catch (Exception e) {
-            throw new ResponseStatusException(
-                    HttpStatus.INTERNAL_SERVER_ERROR, "Error fetching students", e);
+            throw new ApiRequestException(ERROR_FETCHING_STUDENTS, e);
         }
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/student-id/{id}")
     public ResponseEntity<Student> getStudentById(@PathVariable("id") int studentId) {
-        try {
-            return studentService.findStudentById(studentId)
-                    .map(ResponseEntity::ok)
-                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Student not found"));
-        } catch (Exception e) {
-            throw new ResponseStatusException(
-                    HttpStatus.INTERNAL_SERVER_ERROR, "Error fetching student", e);
-        }
+        return studentService.findStudentById(studentId)
+                .map(ResponseEntity::ok)
+                .orElseThrow(() -> new ApiRequestException(STUDENT_NOT_FOUND));
     }
 
     @PostMapping
@@ -58,34 +55,22 @@ public class StudentController {
             Student savedStudent = studentService.saveStudent(student);
             return ResponseEntity.ok(savedStudent);
         } catch (Exception e) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, "Error saving student", e);
+            throw new ApiRequestException(ERROR_SAVING_STUDENT, e);
         }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/id/{id}")
     public ResponseEntity<Student> updateStudent(@PathVariable("id") int studentId, @RequestBody Student student) {
-        try {
-            return studentService.updateStudent(studentId, student)
-                    .map(ResponseEntity::ok)
-                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Student not found"));
-        } catch (Exception e) {
-            throw new ResponseStatusException(
-                    HttpStatus.INTERNAL_SERVER_ERROR, "Error updating student", e);
-        }
+        return studentService.updateStudent(studentId, student)
+                .map(ResponseEntity::ok)
+                .orElseThrow(() -> new ApiRequestException(STUDENT_NOT_FOUND));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/id/{id}")
     public ResponseEntity<?> deleteStudent(@PathVariable("id") int studentId) {
-        try {
-            if (studentService.deleteStudent(studentId)) {
-                return ResponseEntity.ok().build();
-            } else {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Student not found");
-            }
-        } catch (Exception e) {
-            throw new ResponseStatusException(
-                    HttpStatus.INTERNAL_SERVER_ERROR, "Error deleting student", e);
+        if (!studentService.deleteStudent(studentId)) {
+            throw new ApiRequestException(STUDENT_NOT_FOUND);
         }
+        return ResponseEntity.ok().build();
     }
 }

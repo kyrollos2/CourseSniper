@@ -1,0 +1,48 @@
+General Notes on Dependencies Used, and other useful things I learned
+
+Spring Boot is a Java framework that provides resources and tools for the creation
+of applications. It is particularly useful for bootstrapping your application with 
+required dependencies. In this case, I used it to create a RESTful application that 
+hosts CRUD operations for a MySQL server hosted on the cloud.
+
+Some notes on RESTful endpoints:
+- REST stands for Representational State Transfer.
+- The base of data transfer with a RESTful architecture is the trading of resources.
+- Resource states can be defined by a representation, and resources can have multiple representations.
+- The representation represents the concrete data in the specific instance of a resource.
+- This representation is not static; it is generated dynamically based on requests.
+- RESTful State transfer also provides layers between the client and server for ease of scaling and security.
+- Resource representations are also cacheable and can be stored.
+- Because REST deals in resources, resources are defined as nouns over verbs.
+- Stateless architecture is also more secure as the server does not retain user information.
+- Representations are cacheable and can be stored at the end client or middleman to allow for easy recall.
+
+Some important types of Classes:
+- Entities: Entities are blueprints that define resources. For the purpose of these CRUD operations,
+  they are used to map Java objects onto SQL tables.
+- Services: Services involve the business and application logic surrounding an entity. This layer is 
+  one step closer to the client but still on the back end.
+- Repositories: These classes allow for the services to interface with database operations. 
+  Essentially a bridge between layers of abstraction.
+- Controllers: These classes allow for the handling of HTTP requests. It is also within these classes 
+  where you define routes.
+
+1. Lombok Dependency: This dependency reduces a lot of redundant coding work.
+   - The annotations found in using Lombok can automatically create a wide range of Java methods.
+   - @Data: This annotation defines an object as a data store, so it automatically creates getters and setters.
+   - @AllArgsConstructor: This annotation creates overloaded constructors.
+   - @NoArgsConstructor: This annotation creates empty constructors.
+
+2. JPA Dependency: This dependency is responsible for mapping Java objects to database tables.
+   - In order to establish this relationship, you have to define a Java object with data fields that
+     match the columns in the SQL database. Because SQL and Java tend to use different naming schemes,
+     it is very important that you define what the column names used in the MySQL database are.
+   - @Entity: This tag 'passes' management of a SQL table to the entity manager.
+   - @Table: Define the table's SQL name.
+   - @Id: Identify that the following data field references the primary key.
+   - @GeneratedValue (strategy=GenerationType.IDENTITY): Identify that the id is auto-generated. 
+     It also identifies that this value will be managed by the database.
+   - @Column: Relate Java entity and SQL table.
+   - @JoinColumn: Establishes a join relationship.
+   - @ManyToOne: Establish a many-to-one relationship.
+   - @OneToMany: Establish a one-to-many relationship.

@@ -1,0 +1,5 @@
+Exceptions are objects intended to catch errors that happen at runtime
+Exception Strategy:
+1.The Api Request Exception catches errors that happen during Runtime
+2. The handler choses a method based on the error code
+3. The handler method creates an Error Response Data Packet to send back

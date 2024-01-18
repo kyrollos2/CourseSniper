@@ -1,4 +1,4 @@
-# Course Sniper
+#Course Sniper
 
 ![Project Banner](https://github.com/kyrollos2/CourseSniper/blob/main/White%20Minimalist%20Dental%20Clinic%20Facebook%20Cover.png)
 
@@ -9,7 +9,7 @@
 [![GitHub forks](https://img.shields.io/github/forks/kyrollos2/CourseSniper.svg?style=flat-square)](https://github.com/kyrollos2/CourseSniper/network)
 [![GitHub stars](https://img.shields.io/github/stars/kyrollos2/CourseSniper.svg?style=flat-square)](https://github.com/kyrollos2/CourseSniper/stargazers)
 [![GitHub license](https://img.shields.io/github/license/kyrollos2/CourseSniper.svg?style=flat-square)](https://github.com/kyrollos2/CourseSniper/blob/master/LICENSE)
-![Twitter Follow](https://img.shields.io/twitter/follow/your-twitter-handle.svg?style=social&label=Follow)
+
 
 ## 📖 Table of Contents
 
@@ -32,12 +32,20 @@
 
 ![Project GIF](https://github.com/kyrollos2/CourseSniper/blob/main/ScreenRecording2024-01-18at4.32.34AM-ezgif.com-video-to-gif-converter.gif)
 
-Provide a detailed introduction to your project, its objectives, and its potential impact.
+The idea for this arose from our school not having an alert system for when a seat opens up.
+Last semester, a required course for my major with my favorite professor filled up overnight
+The college's course catalog is not optimized for mobile browsers
+The only way I could check for a seat becoming availbe was by carrying my laptop with me.
 
 ## 📊 Quick Stats
-
+![Language Breakdown](language_breakdown.png)
+![Commit Activity](commit_activity.png)
 - Language: JavaScript, Java, Python, SQL
 - Dependencies: 5
 - Last Commit: 2 days ago
 - Active Contributors: 4
+# 🔥 Features
 
+- :mortar_board: Course Selection: Select multiple courses that you wish to track
+- ⚙️ Feature 2: Detailed description
+- 🎨 Feature 3: Detailed description

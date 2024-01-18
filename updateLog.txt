@@ -2,3 +2,7 @@
 01/08/2024 Removed status column from the alerts table.
 01/08/2024 Pull script now grabs almost all info from all courses on catalogue without exceptions-ILC
 01/14/2024 Pull script now grabs ALL courses and dumps course info as a json file-ILC
+01/18/2024 Added Controller Advisor for a large variety of runtime errors
+            Added Json dump service to Course Services
+            Added Scheduler service
+            Added Python Runner Service
