@@ -1,4 +1,4 @@
-# Course Sniper
+#Course Sniper
 
 ![Project Banner](https://github.com/kyrollos2/CourseSniper/blob/main/White%20Minimalist%20Dental%20Clinic%20Facebook%20Cover.png)
 
