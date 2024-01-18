@@ -1,0 +1,28 @@
+name: Update Visualizations
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  
+  workflow_dispatch:
+
+jobs:
+  update-visualizations:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.x'
+      - name: Install dependencies
+        run: |
+          pip3 install requests matplotlib seaborn numpy pandas
+      - name: Run visualization script
+        run: python3 workflows/statsPull.py
+      - name: Commit and push if changes
+        run: |
+          git config --global user.email "kyrollosgirgis@proton.me"
+          git config --global user.name "kyrollos2"
+          git add .
+          git commit -m "Update visualizations" || echo "No changes to commit"
+          git push

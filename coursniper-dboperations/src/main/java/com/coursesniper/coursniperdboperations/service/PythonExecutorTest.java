@@ -1,4 +1,5 @@
-package com.coursesniper.coursniperdboperations.service;
+//Test Class
+/*package com.coursesniper.coursniperdboperations.service;
 
 public class PythonExecutorTest {
     public static void main(String[] args) {
@@ -6,4 +7,4 @@ public class PythonExecutorTest {
         executorService.executePythonScript("coursniper-dboperations/src/main/scripts/modularWebScraping.py");
     }
 }
-
+*/
