@@ -16,30 +16,32 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-
 @AllArgsConstructor
 @NoArgsConstructor
-
 @Entity
-@Table (name="students")
-
+@Table(name = "students")
 public class Student {
     @Id
-    @GeneratedValue (strategy=GenerationType.IDENTITY)
-    @Column(name="student_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "student_id")
     private int studentId;
-    @Column(name="first_name", nullable=false,length=100)
-    private String firstName;
-    @Column(name="last_name",nullable=false,length=100)
-    private String lastName;
-    @Column (name="email",nullable=false,unique=true, length=100)
-    private String email;
-    @Column (name="password",nullable=false,unique=true, length=100)
-    private String password;
-    @ManyToOne
-    @JoinColumn(name="desired_section_name",referencedColumnName="section_name")
-    private Course desiredCourse;
-    @OneToMany(mappedBy="student")
-    private Set<TargetCourse> targetCourses;
 
+    @Column(name = "first_name", nullable = false, length = 100)
+    private String firstName;
+
+    @Column(name = "last_name", nullable = false, length = 100)
+    private String lastName;
+
+    @Column(name = "email", nullable = false, length = 100, unique = true)
+    private String email;
+
+    @Column(name = "password", nullable = false, length = 100)
+    private String password;
+
+    @ManyToOne
+    @JoinColumn(name = "desired_section_name")
+    private Course desiredCourse;
+
+    @OneToMany(mappedBy = "student")
+    private Set<TargetCourse> targetCourses;
 }

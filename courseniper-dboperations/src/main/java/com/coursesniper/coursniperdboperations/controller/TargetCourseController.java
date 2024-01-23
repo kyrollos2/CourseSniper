@@ -41,14 +41,19 @@ public class TargetCourseController {
             throw new ApiRequestException(ERROR_FETCHING_TARGET_COURSES, e);
         }
     }
+    @GetMapping("/student/{studentId}")
+    public ResponseEntity<List<TargetCourse>> getTargetCoursesByStudentId(@PathVariable Integer studentId) {
+        List<TargetCourse> targetCourses = targetCourseService.findTargetCoursesByStudentId(studentId);
+        return ResponseEntity.ok(targetCourses);
+    }
 
-    @GetMapping("/{id}")
+   /*  @GetMapping("/{id}")
     public ResponseEntity<TargetCourse> getTargetCourseById(@PathVariable("id") int id) {
         return targetCourseService.findTargetCourseById(id)
                 .map(ResponseEntity::ok)
                 .orElseThrow(() -> new ApiRequestException(ERROR_TARGET_COURSE_NOT_FOUND));
     }
-
+*/
     @PostMapping
     public ResponseEntity<TargetCourse> addTargetCourse(@RequestBody TargetCourse targetCourse) {
         try {

@@ -6,3 +6,9 @@
             Added Json dump service to Course Services
             Added Scheduler service
             Added Python Runner Service
+01/22/2024 **DATABASE CHANGES**
+            Unfortunately section names are not unique, In between semesters there can be multiple
+            sections with the same name. This leads to problems when loading data into the Database
+            I removed the foreign constraint on section names, and added it to the course Id
+            Refined Json dump service to dump data from memory, instead of updating
+            the database piece-meal
