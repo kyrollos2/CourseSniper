@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 
 import org.springframework.stereotype.Service;
 @Service
+//This Java class builds a sub process that executes the Python webscraping script
 public class PythonRunnerService {
 
 

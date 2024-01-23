@@ -21,35 +21,39 @@ public class TargetCourseService {
         this.targetCourseRepository = targetCourseRepository;
     }
 
+    // Find all target courses
     public List<TargetCourse> findAllTargetCourses() {
         return targetCourseRepository.findAll();
     }
 
-    public Optional<TargetCourse> findTargetCourseById(int id) {
-        return targetCourseRepository.findById(id);
+    public List<TargetCourse> findTargetCoursesByStudentId(Integer studentId) {
+        return targetCourseRepository.findByStudentStudentId(studentId);
     }
+    
 
     public TargetCourse saveTargetCourse(TargetCourse targetCourse) {
         return targetCourseRepository.save(targetCourse);
     }
 
+    // Update existing record
     public Optional<TargetCourse> updateTargetCourse(int targetCourseId, TargetCourse targetCourseDetails) {
         return targetCourseRepository.findById(targetCourseId)
-            .map(existingTargetCourse -> {
-                existingTargetCourse.setStudent(targetCourseDetails.getStudent());
-                existingTargetCourse.setCourse(targetCourseDetails.getCourse());
-                return targetCourseRepository.save(existingTargetCourse);
-            });
+                .map(existingTargetCourse -> {
+                    existingTargetCourse.setStudent(targetCourseDetails.getStudent());
+                    existingTargetCourse.setCourse(targetCourseDetails.getCourse());
+                    return targetCourseRepository.save(existingTargetCourse);
+                });
     }
 
+    // Delete record
     public boolean deleteTargetCourse(int targetCourseId) {
         return targetCourseRepository.findById(targetCourseId)
-            .map(targetCourse -> {
-                targetCourseRepository.delete(targetCourse);
-                return true;
-            }).orElse(false);
+                .map(targetCourse -> {
+                    targetCourseRepository.delete(targetCourse);
+                    return true;
+                }).orElse(false);
     }
 
-   
     
+   
 }
