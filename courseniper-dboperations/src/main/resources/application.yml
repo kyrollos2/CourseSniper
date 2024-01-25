@@ -4,11 +4,15 @@ server:
     context-path: /course-sniper #provide context path
 
 spring:
+  cloud:
+      gcp:
+        project-id: psyched-camp-404208 
 
   datasource:
-    url: jdbc:mysql://34.41.128.5:3306/course_sniper
-    username: dev-user
-    password: Kt,^O,c=PQ/\*zG5
+    
+    #url: jdbc:mysql://34.41.128.5:3306/course_sniper
+    #username: dev-user
+    #password: Kt,^O,c=PQ/\*zG5
     driver-class-name: com.mysql.cj.jdbc.Driver
     
   

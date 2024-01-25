@@ -58,9 +58,8 @@ public class CourseController {
 
     @GetMapping("/section-name/{sectionName}")
     public Course getCoursebySectioneName(@RequestParam String param) {
-        return new Course(); // Note: You may want to implement logic here as well
+        return new Course(); 
     }
-
     @GetMapping("/id/{id}")
     public ResponseEntity<Course> findCourseById(@PathVariable("id") int id) {
         try {

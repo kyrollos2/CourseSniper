@@ -21,7 +21,7 @@ of the python script when i have the docker image of it */
 
     @Scheduled(fixedRate = 90000000) 
     public void executePythonScriptAndProcessData() throws JsonProcessingException, ParseException {
-        String jsonFilePath = "/Users/kyro/Documents/Coding/CourseSniper/courseniper-dboperations/src/main/scripts/courses.json";
+        String jsonFilePath = "courseniper-dboperations/src/main/scripts/courses.json";
         
         courseFileProcessorService.processJsonData(jsonFilePath);
     }

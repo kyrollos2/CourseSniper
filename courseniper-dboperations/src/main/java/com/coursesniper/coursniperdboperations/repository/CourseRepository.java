@@ -13,13 +13,12 @@ import com.coursesniper.coursniperdboperations.entity.Course;
 public interface CourseRepository extends JpaRepository<Course, Integer> {
 
     
-    Optional <Course>  findById(Integer id);
-    Optional<Course> findBySectionName(String sectionName);
-    List<Course> findByTitleContainingIgnoreCase(String title);
-    
-
-    List<Course> findByStartDate(Date startDate);
-
    
-    List<Course> findByAvailableSeats(Integer availableSeats);
-}
+        Optional<Course> findById(Integer id);
+        Optional<Course> findBySectionNameAndStartDate(String sectionName, Date startDate);
+        List<Course> findByTitleContainingIgnoreCase(String title);
+        List<Course> findByStartDate(Date startDate);
+        List<Course> findByAvailableSeats(Integer availableSeats);
+    
+       
+    }
