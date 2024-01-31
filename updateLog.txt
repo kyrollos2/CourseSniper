@@ -4,3 +4,4 @@
 01/14/2024 Pull script now grabs ALL courses and dumps course info as a json file-ILC
 01/18/2024 Removed unnecessary imports and added some exceptions-ILC
 01/18/2024 Made webdriver wait check condition more specific for better consistency-ILC
+01/31/2024 Dockerfile and Docker Container finally set up-ILC
