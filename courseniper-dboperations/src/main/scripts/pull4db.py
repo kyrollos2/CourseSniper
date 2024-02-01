@@ -1,4 +1,3 @@
-
 '''
 This script uses selenium to read the html off of Middlesex College course catalog.
 
@@ -23,13 +22,16 @@ unorganized. This makes the coding process harder and the code also take longer 
 '''
 import time
 import json
-import requests
 
 from selenium import webdriver
 
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
+
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
+
+from webdriver_manager.chrome import ChromeDriverManager
 
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -39,11 +41,11 @@ from selenium.common.exceptions import NoSuchElementException
 url = "https://selfserv.middlesexcc.edu/Student/Courses"
 
 web_options = Options()
-web_options.add_argument("--headless=new")
+web_options.add_argument("--headless")
+web_options.add_argument("--no-sandbox")
 
-driver = webdriver.Chrome(options=web_options)
-driver.get(url)
-driver.maximize_window()
+driver = webdriver.Chrome(options=web_options, service=Service(ChromeDriverManager().install()))
+driver.get(url) 
 
 action = ActionChains(driver)
 
@@ -73,11 +75,10 @@ def print_course_list(file):
 
     num_pages = int(driver.find_element(by=By.ID, value="course-results-total-pages").text)
     curr_page = int(driver.find_element(by=By.ID, value="course-results-current-page").get_attribute("value"))
-    curr_id = 1
 
     while(curr_page < num_pages+1):
         print(f"Page {curr_page} out of {num_pages}")
-        curr_id = page_scraper(json_dict, curr_id)
+        page_scraper(json_dict)
         print("Scrape complete!")
         next_page_button = driver.find_element(by=By.ID, value="course-results-next-page")
         action.move_to_element(next_page_button).click().perform()
@@ -85,7 +86,7 @@ def print_course_list(file):
 
     json.dump(json_dict, file, indent=4)
 
-def page_scraper(json_dict, table_id):
+def page_scraper(json_dict):
     #Waits for all the rows of the course catalog table to be visible
     try:
         WebDriverWait(driver, 10).until(EC.visibility_of_all_elements_located((By.XPATH, "//tbody[@class='esg-table-body']/tr/td/div")))
@@ -99,7 +100,7 @@ def page_scraper(json_dict, table_id):
     #Loops through the list and grabs the text value of all the fields from the rows
     for row in curr_page_table:
         term = row.find_element(by=By.XPATH, value=".//td[@data-role='Term']/div").text
-        status = term = row.find_element(by=By.XPATH, value=".//td[@data-role='Status']/div").text
+        status = row.find_element(by=By.XPATH, value=".//td[@data-role='Status']/div").text
         section_name = row.find_element(by=By.XPATH, value=".//td[@data-role='Section Name']/div/a").text
         title = row.find_element(by=By.XPATH, value=".//td[@data-role='Title']/div").text
         dates = row.find_element(by=By.XPATH, value=".//td[@data-role='Dates']/div").text.split("-")
@@ -121,9 +122,7 @@ def page_scraper(json_dict, table_id):
             "available_seats" : available_seats
         }
 
-        json_dict.update({table_id: row_json})
-        table_id += 1
-    return table_id
+        json_dict.update({f"{term} {section_name}": row_json})
 
 start_time = time.time()
 
