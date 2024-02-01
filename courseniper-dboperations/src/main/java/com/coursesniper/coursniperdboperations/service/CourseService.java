@@ -1,4 +1,5 @@
 package com.coursesniper.coursniperdboperations.service;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,61 +12,70 @@ import com.coursesniper.coursniperdboperations.repository.CourseRepository;
 import jakarta.transaction.Transactional;
 
 @Service
-
 public class CourseService {
-    @Autowired
+
     private final CourseRepository courseRepository;
 
-    
+    @Autowired
     public CourseService(CourseRepository courseRepository) {
         this.courseRepository = courseRepository;
     }
 
-    public List<Course> findAllCourses() { //fetch all courses
+    public List<Course> findAllCourses() {
         return courseRepository.findAll();
     }
 
-    public Optional<Course> findCourseById(int id) { //fetch course by id
+    public Optional<Course> findCourseById(int id) {
         return courseRepository.findById(id);
     }
-   
-   // fetch course by title but allow for short spellings
-    public List<Course> findCoursesByTitleLike(String search) { 
-            return courseRepository.findByTitleContainingIgnoreCase(search);
+
+    public List<Course> findCoursesByTitleLike(String search) {
+        return courseRepository.findByTitleContainingIgnoreCase(search);
     }
 
-    //Save a single course
     public Course saveCourse(Course course) {
-        
-        return courseRepository.save(course);
+        return saveOrUpdateCourse(course);
     }
-   //save a series of courses, useful for the data dump
+
     @Transactional
     public List<Course> saveAllCourses(List<Course> courses) {
-        return courseRepository.saveAll(courses);
+        List<Course> savedCourses = new ArrayList<>();
+        for (Course course : courses) {
+            savedCourses.add(saveOrUpdateCourse(course));
+        }
+        return savedCourses;
     }
-
-    
-
 
     public Optional<Course> updateCourse(int courseId, Course courseDetails) {
         return courseRepository.findById(courseId)
-            .map(existingCourse -> {
-                
-                existingCourse.setSectionName(courseDetails.getSectionName());
-                existingCourse.setTitle(courseDetails.getTitle());
-                existingCourse.setStartDate(courseDetails.getStartDate());
-                existingCourse.setAvailableSeats(courseDetails.getAvailableSeats());
-                return courseRepository.save(existingCourse);
-            });
+                .map(existingCourse -> {
+                    existingCourse.setSectionName(courseDetails.getSectionName());
+                    existingCourse.setTitle(courseDetails.getTitle());
+                    existingCourse.setStartDate(courseDetails.getStartDate());
+                    existingCourse.setAvailableSeats(courseDetails.getAvailableSeats());
+                    return courseRepository.save(existingCourse);
+                });
     }
 
     public boolean deleteCourse(int courseId) {
         return courseRepository.findById(courseId)
-            .map(course -> {
-                courseRepository.delete(course);
-                return true;
-            }).orElse(false);
-    
-}
+                .map(course -> {
+                    courseRepository.delete(course);
+                    return true;
+                }).orElse(false);
+    }
+
+    private Course saveOrUpdateCourse(Course course) {
+        Optional<Course> existingCourse = courseRepository.findBySectionNameAndStartDate(
+                course.getSectionName(), course.getStartDate());
+
+        if (existingCourse.isPresent()) {
+            Course updatedCourse = existingCourse.get();
+            // update the necessary fields of updatedCourse from course
+            // TODO: Set the fields that need to be updated from course to updatedCourse here
+            return courseRepository.save(updatedCourse);
+        } else {
+            return courseRepository.save(course);
+        }
+    }
 }

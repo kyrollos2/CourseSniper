@@ -4,9 +4,13 @@ server:
     context-path: /course-sniper #provide context path
 
 spring:
+  cloud:
+      gcp:
+        project-id: psyched-camp-404208 
 
   datasource:
     
+
     driver-class-name: com.mysql.cj.jdbc.Driver
     
   

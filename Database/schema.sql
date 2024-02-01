@@ -6,8 +6,10 @@ CREATE TABLE courses (
     faculty VARCHAR(100) NOT NULL,
     available_seats INT,
     INDEX idx_courses_available_seats (available_seats),
-    INDEX idx_courses_section_name (section_name)  -- Add this line to create an index for section_name
+    INDEX idx_courses_section_name (section_name),
+    UNIQUE KEY unique_section_date (section_name, start_date) 
 );
+
 
 CREATE TABLE students (
     student_id INT AUTO_INCREMENT PRIMARY KEY,
