@@ -16,6 +16,17 @@ RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key
     && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list
 RUN apt-get update && apt-get -y install google-chrome-stable
 
-#Runs Script
-CMD ["python", "pull4db.py"]
+#Runs Script (-u argument makes it so you can see the logs in real time)
+CMD ["python", "-u", "pull4db.py"]
 
+#--------------------------------------------------------------------------
+#MOST IMPORTANT BEFORE ANYTHING MAKE SURE YOU HAVE DOCKER DESKTOP INSTALLED
+#https://www.docker.com/products/docker-desktop/
+
+#"WHAT TO INPUT INTO THE GIT COMMAND LINE"
+
+# 1. Use the 'cd' command to change the current directory to the location of this dockerfile 
+# 2. Type in 'docker build -t course-sniper .' This will create the docker image.
+# 3. Type in 'docker run course-sniper' This will run the image in a container
+
+#--------------------------------------------------------------------------
