@@ -18,14 +18,10 @@ import com.coursesniper.coursniperdboperations.exception.ApiRequestException;
 import com.coursesniper.coursniperdboperations.service.StudentService;
 
 @RestController
-@RequestMapping("/students")
+@RequestMapping("/api/students")
 public class StudentController {
 
     private final StudentService studentService;
-
-    private static final String ERROR_FETCHING_STUDENTS = "Error fetching students";
-    private static final String STUDENT_NOT_FOUND = "Student not found";
-    private static final String ERROR_SAVING_STUDENT = "Error saving student";
 
     @Autowired
     public StudentController(StudentService studentService) {
@@ -34,42 +30,42 @@ public class StudentController {
 
     @GetMapping
     public ResponseEntity<List<Student>> getAllStudents() {
-        try {
-            List<Student> students = studentService.findAllStudents();
-            return ResponseEntity.ok(students);
-        } catch (Exception e) {
-            throw new ApiRequestException(ERROR_FETCHING_STUDENTS, e);
-        }
+        List<Student> students = studentService.findAllStudents();
+        return ResponseEntity.ok(students);
     }
 
-    @GetMapping("/student-id/{id}")
-    public ResponseEntity<Student> getStudentById(@PathVariable("id") int studentId) {
-        return studentService.findStudentById(studentId)
+    @GetMapping("/{id}")
+    public ResponseEntity<Student> getStudentById(@PathVariable int id) {
+        return studentService.findStudentById(id)
                 .map(ResponseEntity::ok)
-                .orElseThrow(() -> new ApiRequestException(STUDENT_NOT_FOUND));
+                .orElseThrow(() -> new ApiRequestException("Student with ID: " + id + " not found"));
     }
 
     @PostMapping
     public ResponseEntity<Student> addStudent(@RequestBody Student student) {
-        try {
-            Student savedStudent = studentService.saveStudent(student);
-            return ResponseEntity.ok(savedStudent);
-        } catch (Exception e) {
-            throw new ApiRequestException(ERROR_SAVING_STUDENT, e);
-        }
+        Student savedStudent = studentService.saveStudent(student);
+        return ResponseEntity.ok(savedStudent);
     }
 
-    @PutMapping("/id/{id}")
-    public ResponseEntity<Student> updateStudent(@PathVariable("id") int studentId, @RequestBody Student student) {
-        return studentService.updateStudent(studentId, student)
+    @PutMapping("/{id}")
+    public ResponseEntity<Student> updateStudent(@PathVariable int id, @RequestBody Student student) {
+        return studentService.updateStudent(id, student)
                 .map(ResponseEntity::ok)
-                .orElseThrow(() -> new ApiRequestException(STUDENT_NOT_FOUND));
+                .orElseThrow(() -> new ApiRequestException("Failed to update student with ID: " + id));
     }
 
-    @DeleteMapping("/id/{id}")
-    public ResponseEntity<?> deleteStudent(@PathVariable("id") int studentId) {
-        if (!studentService.deleteStudent(studentId)) {
-            throw new ApiRequestException(STUDENT_NOT_FOUND);
+    @PutMapping("/reset-password/{id}")
+    public ResponseEntity<?> resetStudentPassword(@PathVariable int id, @RequestBody String newPassword) {
+        studentService.updateStudentPassword(id, newPassword)
+                .orElseThrow(() -> new ApiRequestException("Failed to reset password for student with ID: " + id));
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteStudent(@PathVariable int id) {
+        boolean deleted = studentService.deleteStudent(id);
+        if (!deleted) {
+            throw new ApiRequestException("Failed to delete student with ID: " + id);
         }
         return ResponseEntity.ok().build();
     }

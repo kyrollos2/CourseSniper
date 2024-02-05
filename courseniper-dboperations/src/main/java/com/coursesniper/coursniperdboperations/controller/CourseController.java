@@ -18,19 +18,12 @@ import com.coursesniper.coursniperdboperations.entity.Course;
 import com.coursesniper.coursniperdboperations.exception.ApiRequestException;
 import com.coursesniper.coursniperdboperations.service.CourseService;
 
-
 @RestController
-@RequestMapping("/courses")
+@RequestMapping("/api/courses")
 public class CourseController {
 
     private final CourseService courseService;
 
-    private static final String ERROR_FETCHING_ALL_COURSES = "Failed to fetch all courses";
-    private static final String ERROR_COURSE_NOT_FOUND_BY_ID = "Course not found with ID: ";
-    private static final String ERROR_SAVING_COURSE = "Failed to save course";
-    private static final String ERROR_COURSE_NOT_FOUND_FOR_UPDATE = "Course not found for update with ID: ";
-    private static final String ERROR_FAILED_TO_DELETE_COURSE = "Failed to delete course: Course not found with ID: ";
-    
     @Autowired
     public CourseController(CourseService courseService) {
         this.courseService = courseService;
@@ -38,81 +31,68 @@ public class CourseController {
 
     @GetMapping
     public ResponseEntity<List<Course>> getAllCourses() {
-        try {
-            List<Course> courses = courseService.findAllCourses();
-            return ResponseEntity.ok(courses);
-        } catch (Exception e) {
-            throw new ApiRequestException(ERROR_FETCHING_ALL_COURSES, e);
+        List<Course> courses = courseService.findAllCourses();
+        if (courses.isEmpty()) {
+            throw new ApiRequestException("No courses available at the moment.");
         }
+        return ResponseEntity.ok(courses);
     }
 
-    @GetMapping("/course-title/search")
+    @GetMapping("/{id}")
+    public Course getCourseById(@PathVariable int id) {
+        return courseService.findCourseById(id)
+                .orElseThrow(() -> new ApiRequestException("Course with ID: " + id + " not found."));
+    }
+
+    @GetMapping("/search")
     public ResponseEntity<List<Course>> getCoursesByTitle(@RequestParam String title) {
-        try {
-            List<Course> courses = courseService.findCoursesByTitleLike(title);
-            return ResponseEntity.ok(courses);
-        } catch (Exception e) {
-            throw new ApiRequestException("Check your Spelling " + title + " Does not Appear in Our Database");
+        List<Course> courses = courseService.findCoursesByTitleLike(title);
+        if (courses.isEmpty()) {
+            throw new ApiRequestException("No courses found matching title: " + title);
         }
+        return ResponseEntity.ok(courses);
     }
 
-    @GetMapping("/section-name/{sectionName}")
-    public Course getCoursebySectioneName(@RequestParam String param) {
-        return new Course(); 
-    }
-    @GetMapping("/id/{id}")
-    public ResponseEntity<Course> findCourseById(@PathVariable("id") int id) {
-        try {
-            return courseService.findCourseById(id)
-                    .map(ResponseEntity::ok)
-                    .orElseThrow(() -> new ApiRequestException(ERROR_COURSE_NOT_FOUND_BY_ID + id));
-        } catch (Exception e) {
-            throw new ApiRequestException(ERROR_FETCHING_ALL_COURSES + id + ": " + e.getMessage());
+    @GetMapping("/term/{term}")
+    public ResponseEntity<List<Course>> getCoursesByTerm(@PathVariable String term) {
+        List<Course> courses = courseService.findCoursesByTerm(term);
+        if (courses.isEmpty()) {
+            throw new ApiRequestException("No courses found for term: " + term);
         }
+        return ResponseEntity.ok(courses);
     }
-   /*  @PostMapping("/upload-json")
-    public ResponseEntity<String> uploadJsonData(@RequestBody String jsonData) {
-        try {
-            // Parse the JSON data and save it to the database
-            courseService.saveCoursesFromJson(jsonData);
-            return ResponseEntity.ok("JSON data uploaded and saved successfully");
-        } catch (Exception e) {
-            // Handle exceptions if any occur
-            throw new ApiRequestException("Error uploading JSON data", e);
+
+    @GetMapping("/faculty/{facultyName}")
+    public ResponseEntity<List<Course>> getCoursesByFacultyName(@PathVariable String facultyName) {
+        List<Course> courses = courseService.findCoursesByFacultyName(facultyName);
+        if (courses.isEmpty()) {
+            throw new ApiRequestException("No courses found taught by faculty: " + facultyName);
         }
+        return ResponseEntity.ok(courses);
     }
-    */
+
     @PostMapping
     public ResponseEntity<Course> addCourse(@RequestBody Course course) {
         try {
             Course savedCourse = courseService.saveCourse(course);
             return ResponseEntity.ok(savedCourse);
         } catch (Exception e) {
-            throw new ApiRequestException(ERROR_SAVING_COURSE, e);
+            throw new ApiRequestException("Failed to add course: " + e.getMessage());
         }
     }
 
-    @PutMapping("/id/{id}")
-    public ResponseEntity<Course> updateCourse(@PathVariable("id") int id, @RequestBody Course course) {
-        try {
-            return courseService.updateCourse(id, course)
-                    .map(ResponseEntity::ok)
-                    .orElseThrow(() -> new ApiRequestException(ERROR_COURSE_NOT_FOUND_FOR_UPDATE + id));
-        } catch (Exception e) {
-            throw new ApiRequestException(ERROR_COURSE_NOT_FOUND_BY_ID + id + ": " + e.getMessage());
-        }
+    @PutMapping("/{id}")
+    public Course updateCourse(@PathVariable int id, @RequestBody Course course) {
+        return courseService.updateCourse(id, course)
+                .orElseThrow(() -> new ApiRequestException("Failed to update course with ID: " + id));
     }
 
-    @DeleteMapping("/id/{id}")
-    public ResponseEntity<?> deleteCourse(@PathVariable("id") int id) {
-        try {
-            if (courseService.deleteCourse(id)) {
-                return ResponseEntity.ok().build();
-            } else {
-                throw new ApiRequestException(ERROR_FAILED_TO_DELETE_COURSE + id);
-            }
-        } catch (Exception e) {
-            throw new ApiRequestException(ERROR_COURSE_NOT_FOUND_BY_ID + id + ": " + e.getMessage());
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteCourse(@PathVariable int id) {
+        boolean isDeleted = courseService.deleteCourse(id);
+        if (!isDeleted) {
+            throw new ApiRequestException("Failed to delete course with ID: " + id);
         }
+        return ResponseEntity.ok().build();
     }
 }
