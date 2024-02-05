@@ -15,3 +15,6 @@
             Refined Json dump service to dump data from memory, instead of updating
             the database piece-meal
 01/31/2024 Dockerfile and Docker Container finally set up-ILC
+02/05/2024 Added password encryption, debugged several key routes. 
+       
+

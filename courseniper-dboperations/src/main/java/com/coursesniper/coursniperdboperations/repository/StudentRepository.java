@@ -10,17 +10,19 @@ import com.coursesniper.coursniperdboperations.entity.Student;
 
 @Repository
 public interface StudentRepository extends JpaRepository<Student, Integer> {
-    
-    
-    @Override
-    Optional<Student> findById(Integer id);
 
-   
+    
     Optional<Student> findByEmail(String email);
 
     
     List<Student> findByLastName(String lastName);
 
-   
+    
     List<Student> findByFirstName(String firstName);
+
+   
+    List<Student> findByFirstNameAndLastName(String firstName, String lastName);
+
+    
+    List<Student> findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(String firstName, String lastName);
 }

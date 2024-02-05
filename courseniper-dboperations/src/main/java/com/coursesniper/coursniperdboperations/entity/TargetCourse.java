@@ -7,13 +7,16 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 @Data
 @RequiredArgsConstructor
 @Entity
-@Table(name = "target_courses")
+@Table(name = "target_courses", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"student_id", "course_id"})
+})
 public class TargetCourse {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

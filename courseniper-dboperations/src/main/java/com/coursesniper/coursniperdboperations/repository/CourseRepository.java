@@ -1,5 +1,4 @@
 package com.coursesniper.coursniperdboperations.repository;
-
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -13,12 +12,25 @@ import com.coursesniper.coursniperdboperations.entity.Course;
 public interface CourseRepository extends JpaRepository<Course, Integer> {
 
     
-   
-        Optional<Course> findById(Integer id);
-        Optional<Course> findBySectionNameAndStartDate(String sectionName, Date startDate);
-        List<Course> findByTitleContainingIgnoreCase(String title);
-        List<Course> findByStartDate(Date startDate);
-        List<Course> findByAvailableSeats(Integer availableSeats);
+    Optional<Course> findBySectionNameAndStartDate(String sectionName, Date startDate);
+
     
-       
-    }
+    List<Course> findByTitleContainingIgnoreCase(String title);
+
+    
+    List<Course> findByStartDate(Date startDate);
+
+    
+    List<Course> findByAvailableSeats(Integer availableSeats);
+
+    List<Course> findByAvailableSeatsGreaterThan(Integer availableSeats);
+
+   
+    List<Course> findByTerm(String term);
+
+   
+    List<Course> findByFacultyContainingIgnoreCase(String facultyName);
+
+    
+    Optional<Course> findBySectionNameAndTerm(String sectionName, String term);
+}

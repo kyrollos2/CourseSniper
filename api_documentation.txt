@@ -1,0 +1,116 @@
+
+API Documentation
+=================
+https://psyched-camp-404208.nn.r.appspot.com/course-sniper/
+
+Alert Controller
+----------------
+
+- POST /api/alerts
+  Creates a new alert.
+  Request Body: Alert object
+  Response: Created Alert object
+
+- PUT /api/alerts/{alertId}/status/{status}
+  Updates the status of an alert by its ID.
+  Path Variables: alertId (int), status (Alert.AlertStatus)
+  Response: Updated Alert object
+
+
+Course Controller
+-----------------
+
+- GET /api/courses
+  Retrieves all courses.
+  Response: List of Course objects
+
+- GET /api/courses/{id}
+  Retrieves a course by its ID.
+  Path Variable: id (int)
+  Response: Course object
+
+- GET /api/courses/search?title=you-substring
+  Searches courses by title, ignores case, and allows for substring 
+like title = acc
+  Query Parameter: title (String)
+  Response: List of Course objects matching the title
+
+- GET /api/courses/term/{term}
+  Retrieves courses by term.
+  Path Variable: term (String)
+  Response: List of Course objects for the specified term
+
+- GET /api/courses/faculty/{facultyName}
+  Retrieves courses taught by a specific faculty member.
+  Path Variable: facultyName (String)
+  Response: List of Course objects
+
+- POST /api/courses
+  Adds a new course.
+  Request Body: Course object
+  Response: Saved Course object
+
+- PUT /api/courses/{id}
+  Updates a course by its ID.
+  Path Variable: id (int)
+  Request Body: Course object
+  Response: Updated Course object
+
+- DELETE /api/courses/{id}
+  Deletes a course by its ID.
+  Path Variable: id (int)
+  Response: Confirmation of deletion
+
+
+Student Controller
+------------------
+
+- GET /api/students
+  Retrieves all students.
+  Response: List of Student objects
+
+- GET /api/students/{id}
+  Retrieves a student by ID.
+  Path Variable: id (int)
+  Response: Student object
+
+- POST /api/students
+  Adds a new student.
+  Request Body: Student object
+  Response: Saved Student object
+
+- PUT /api/students/{id}
+  Updates a student by ID.
+  Path Variable: id (int)
+  Request Body: Student object
+  Response: Updated Student object
+
+- PUT /api/students/reset-password/{id}
+  Resets a student's password.
+  Path Variable: id (int)
+  Request Body: newPassword (String)
+  Response: Confirmation of password reset
+
+- DELETE /api/students/{id}
+  Deletes a student by ID.
+  Path Variable: id (int)
+  Response: Confirmation of deletion
+
+
+Target Course Controller
+------------------------
+
+- GET /api/target-courses/student/{studentId}
+  Retrieves target courses for a student by student ID.
+  Path Variable: studentId (Integer)
+  Response: List of TargetCourse objects
+
+- POST /api/target-courses
+  Adds a new target course.
+  Request Body: TargetCourse object
+  Response: Saved TargetCourse object
+
+- DELETE /api/target-courses/{id}
+  Deletes a target course by its ID.
+  Path Variable: id (int)
+  Response: Confirmation of deletion

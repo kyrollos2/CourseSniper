@@ -16,18 +16,22 @@ import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
+
 @Table(name = "courses", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"section_name", "start_date"})
+    @UniqueConstraint(columnNames = {"term", "section_name"})
 })
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="course_id")
     private int id;
+    
+    @Column(name = "term", nullable = false, length = 100)
+    private String term;
 
     @Column(name = "section_name", nullable = false, length = 100)
     private String sectionName;
@@ -35,13 +39,14 @@ public class Course {
     @Column(name = "title", nullable = false, columnDefinition = "TEXT")
     private String title;
 
-    @Column(name = "start_date")
+    @Column(name = "start_date", nullable = false)
     @Temporal(TemporalType.DATE)
     private Date startDate;
-     @Column (name="faculty", nullable=false, length= 100)
-     private String faculty;
 
-    @Column(name = "available_seats")
+    @Column(name = "faculty", length = 255)
+    private String faculty;
+
+    @Column(name = "available_seats", nullable = false)
     private Integer availableSeats;
 
     @OneToMany(mappedBy = "course")

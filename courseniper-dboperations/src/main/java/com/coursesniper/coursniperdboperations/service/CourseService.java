@@ -1,5 +1,5 @@
 package com.coursesniper.coursniperdboperations.service;
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -29,53 +29,47 @@ public class CourseService {
         return courseRepository.findById(id);
     }
 
-    public List<Course> findCoursesByTitleLike(String search) {
-        return courseRepository.findByTitleContainingIgnoreCase(search);
+    public List<Course> findCoursesByTitleLike(String title) {
+        return courseRepository.findByTitleContainingIgnoreCase(title);
     }
 
+    public List<Course> findCoursesByTerm(String term) {
+        return courseRepository.findByTerm(term);
+    }
+
+    public List<Course> findCoursesByFacultyName(String facultyName) {
+        return courseRepository.findByFacultyContainingIgnoreCase(facultyName);
+    }
+
+    @Transactional
     public Course saveCourse(Course course) {
-        return saveOrUpdateCourse(course);
+        return courseRepository.save(course);
     }
 
     @Transactional
     public List<Course> saveAllCourses(List<Course> courses) {
-        List<Course> savedCourses = new ArrayList<>();
-        for (Course course : courses) {
-            savedCourses.add(saveOrUpdateCourse(course));
-        }
-        return savedCourses;
+        return courseRepository.saveAll(courses);
     }
 
+    @Transactional
     public Optional<Course> updateCourse(int courseId, Course courseDetails) {
         return courseRepository.findById(courseId)
                 .map(existingCourse -> {
                     existingCourse.setSectionName(courseDetails.getSectionName());
                     existingCourse.setTitle(courseDetails.getTitle());
                     existingCourse.setStartDate(courseDetails.getStartDate());
+                    existingCourse.setFaculty(courseDetails.getFaculty());
                     existingCourse.setAvailableSeats(courseDetails.getAvailableSeats());
                     return courseRepository.save(existingCourse);
                 });
     }
 
+    @Transactional
     public boolean deleteCourse(int courseId) {
         return courseRepository.findById(courseId)
                 .map(course -> {
                     courseRepository.delete(course);
                     return true;
                 }).orElse(false);
-    }
-
-    private Course saveOrUpdateCourse(Course course) {
-        Optional<Course> existingCourse = courseRepository.findBySectionNameAndStartDate(
-                course.getSectionName(), course.getStartDate());
-
-        if (existingCourse.isPresent()) {
-            Course updatedCourse = existingCourse.get();
-            // update the necessary fields of updatedCourse from course
-            // TODO: Set the fields that need to be updated from course to updatedCourse here
-            return courseRepository.save(updatedCourse);
-        } else {
-            return courseRepository.save(course);
-        }
     }
 }
