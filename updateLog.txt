@@ -6,3 +6,4 @@
 01/18/2024 Made webdriver wait check condition more specific for better consistency-ILC
 01/31/2024 Dockerfile and Docker Container finally set up-ILC
 01/31/2024 Small documentation on dockerfile and made logs unbuffered-ILC
+02/09/2024 Updated Selenium in requirements.txt-ILC
