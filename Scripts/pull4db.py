@@ -69,7 +69,7 @@ def main_page_navigator():
 
 
 def print_course_list(file):
-    json_dict = {   
+    json_dict = {       
 
     }
 
@@ -95,7 +95,7 @@ def page_scraper(json_dict):
     #Waits for all the rows of the course catalog table to be visible
     try:
         WebDriverWait(driver, 10).until(EC.visibility_of_all_elements_located((By.XPATH, "//tbody[@class='esg-table-body']/tr/td/div")))
-    except TimeoutError as err:
+    except TimeoutError as err: 
         print("Code has exceeded the 10 second maximum of waiting for website elements to load. Website is slower than usual or there is an issue with the code", err.args)
         exit()
     
@@ -120,14 +120,21 @@ def page_scraper(json_dict):
         #Formats the data to be printed out to the json file
         row_json = {
             "term" : term,
+            "status" : status,
             "section_name" : section_name,
             "title" : title,
             "start_date" : start_date,
+            "end_date" : end_date,
+            "location" : course_location,
             "faculty" : course_faculty,
-            "available_seats" : available_seats
+            "available_seats" : available_seats,
+            "credits" : course_credits
         }
 
-        json_dict.update({f"{term} {section_name}": row_json})
+        section_no_dashes = section_name.replace("-", "")
+        comp_key = f"{term} {section_no_dashes}"
+        comp_key = comp_key.replace(" ", "")
+        json_dict.update({comp_key: row_json})
 
 start_time = time.time()
 
