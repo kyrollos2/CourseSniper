@@ -2,11 +2,18 @@
 CREATE TABLE courses (
     id INT AUTO_INCREMENT PRIMARY KEY,
     term VARCHAR(100) NOT NULL,
+    status VARCHAR (10) NOT NULL.
     section_name VARCHAR(100) NOT NULL,
     title TEXT NOT NULL,
+    dates VARCHAR(20),
     start_date DATE NOT NULL,
+    end_date DATE NOT NULL,
+    course_location VARCHAR (255),
     faculty VARCHAR(150),
+    availabile VARCHAR (10),
     available_seats INT NOT NULL,
+    course_credits INT,
+    INDEX idx_courses_title(title),
     INDEX idx_courses_available_seats (available_seats),
     INDEX idx_courses_term_section_name (term, section_name),
     UNIQUE KEY unique_term_section (term, section_name)

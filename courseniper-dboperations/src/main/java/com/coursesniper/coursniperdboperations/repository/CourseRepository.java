@@ -11,7 +11,7 @@ import com.coursesniper.coursniperdboperations.entity.Course;
 @Repository
 public interface CourseRepository extends JpaRepository<Course, Integer> {
 
-    
+   
     Optional<Course> findBySectionNameAndStartDate(String sectionName, Date startDate);
 
     
