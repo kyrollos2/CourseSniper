@@ -6,7 +6,12 @@ In order to do this, we have to access the following website:
 We use this website in order to get to the actual catalogue itself:
     https://selfserv.middlesexcc.edu/Student/Courses/Search
 
+    ----------------------------
 1.A    main_page_navigator():
+This method simply accesses the main page and goes to the course catalogue.
+
+There is an important reason as to why this method exists.
+
 The first link is NOT the catalogue of courses itself, but the /main page/ before the course
 catalogue. The reason we use this page instead of using the catalogue link itself is because
 of the way that the website is structured.
@@ -18,7 +23,10 @@ The website has two views that can only be accessed on the main page:
 When accessing the catalog directly via the second link, the default view is the catalog
 listing. This is problematic because the data is not visible under many drop downs, and is also
 unorganized. This makes the coding process harder and the code also take longer to run.
+    ----------------------------
+1.B     def print_course_list(file):
 
+This is the only method called that accesses all the other methods. It sets up the json dictionary
 '''
 import time
 import json
@@ -49,9 +57,6 @@ driver.get(url)
 
 action = ActionChains(driver)
 
-#Create a json object that uses key value pairs
-
-
 #Explanation for why this exists 
 def main_page_navigator():
     try:
@@ -64,7 +69,7 @@ def main_page_navigator():
 
 
 def print_course_list(file):
-    json_dict = {   
+    json_dict = {       
 
     }
 
@@ -74,7 +79,7 @@ def print_course_list(file):
     WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, "course-catalog-hide-filters-button"))).click()
 
     num_pages = int(driver.find_element(by=By.ID, value="course-results-total-pages").text)
-    curr_page = int(driver.find_element(by=By.ID, value="course-results-current-page").get_attribute("value"))
+    curr_page = 1
 
     while(curr_page < num_pages+1):
         print(f"Page {curr_page} out of {num_pages}")
@@ -90,7 +95,7 @@ def page_scraper(json_dict):
     #Waits for all the rows of the course catalog table to be visible
     try:
         WebDriverWait(driver, 10).until(EC.visibility_of_all_elements_located((By.XPATH, "//tbody[@class='esg-table-body']/tr/td/div")))
-    except TimeoutError as err:
+    except TimeoutError as err: 
         print("Code has exceeded the 10 second maximum of waiting for website elements to load. Website is slower than usual or there is an issue with the code", err.args)
         exit()
     
@@ -115,14 +120,21 @@ def page_scraper(json_dict):
         #Formats the data to be printed out to the json file
         row_json = {
             "term" : term,
+            "status" : status,
             "section_name" : section_name,
             "title" : title,
             "start_date" : start_date,
+            "end_date" : end_date,
+            "location" : course_location,
             "faculty" : course_faculty,
-            "available_seats" : available_seats
+            "available_seats" : available_seats,
+            "credits" : course_credits
         }
 
-        json_dict.update({f"{term} {section_name}": row_json})
+        section_no_dashes = section_name.replace("-", "")
+        comp_key = f"{term} {section_no_dashes}"
+        comp_key = comp_key.replace(" ", "")
+        json_dict.update({comp_key: row_json})
 
 start_time = time.time()
 
