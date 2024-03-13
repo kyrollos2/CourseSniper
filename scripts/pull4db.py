@@ -115,14 +115,22 @@ def page_scraper(json_dict):
         #Formats the data to be printed out to the json file
         row_json = {
             "term" : term,
+            "status" : status,
             "section_name" : section_name,
             "title" : title,
             "start_date" : start_date,
+            "end_date" : end_date,
+            "location" : course_location,
             "faculty" : course_faculty,
-            "available_seats" : available_seats
+            "available_seats" : available_seats,
+            "credits" : course_credits
         }
 
         json_dict.update({f"{term} {section_name}": row_json})
+        section_no_dashes = section_name.replace("-", "")
+        comp_key = f"{term} {section_no_dashes}"
+        comp_key = comp_key.replace(" ", "")
+        json_dict.update({comp_key: row_json})
 
 start_time = time.time()
 

@@ -3,6 +3,7 @@ package com.coursesniper.coursniperdboperations.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +19,7 @@ import com.coursesniper.coursniperdboperations.entity.Course;
 import com.coursesniper.coursniperdboperations.exception.ApiRequestException;
 import com.coursesniper.coursniperdboperations.service.CourseService;
 
+import org.springframework.data.domain.Page;
 @RestController
 @RequestMapping("/api/courses")
 public class CourseController {
@@ -37,7 +39,23 @@ public class CourseController {
         }
         return ResponseEntity.ok(courses);
     }
-
+    @GetMapping ("/(field)")
+    public ResponseEntity<List<Course>> getAllCoursesWithSorting(@PathVariable String field) {
+        List<Course> courses = courseService.findCourseWithSorting(field);
+        if (courses.isEmpty()) {
+            throw new ApiRequestException("No courses available at the moment.");
+        }
+        return ResponseEntity.ok(courses);
+    }
+    @GetMapping("/pagination/{offset}/{pageSize}")
+    public ResponseEntity<Page<Course>> findCoursesWithPagination(@PathVariable int offset, @PathVariable int pageSize) {
+        Page<Course> coursesWithPagination = courseService.findCoursesWithPagination(offset, pageSize);
+        if (coursesWithPagination.isEmpty()) {
+            throw new ApiRequestException("No courses available at the moment.");
+        }
+        return new ResponseEntity<>(coursesWithPagination, HttpStatus.OK); // Pass the page and then the status code
+    }
+    
     @GetMapping("/{id}")
     public Course getCourseById(@PathVariable int id) {
         return courseService.findCourseById(id)

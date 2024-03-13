@@ -4,11 +4,15 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 import com.coursesniper.coursniperdboperations.entity.Course;
 import com.coursesniper.coursniperdboperations.repository.CourseRepository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -24,9 +28,16 @@ public class CourseService {
     public List<Course> findAllCourses() {
         return courseRepository.findAll();
     }
+    public List <Course> findCourseWithSorting(String  title){
+        return courseRepository.findAll(Sort.by(Sort.Direction.ASC, title));
+    }
 
     public Optional<Course> findCourseById(int id) {
         return courseRepository.findById(id);
+    }
+    public Page <Course> findCoursesWithPagination (int offset, int pageSize){
+        Page <Course> courses = courseRepository.findAll(PageRequest.of(offset,pageSize));
+        return courses;
     }
 
     public List<Course> findCoursesByTitleLike(String title) {
